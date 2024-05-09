@@ -1,0 +1,23 @@
+pipeline {
+    agent any
+
+  
+    stages {
+        stage('Docker Build') {
+            steps {
+                script {
+                   sh "docker build -f api/dockerfile -t suelongo/api:latest-4bfe93c2714c api"
+                }
+            }
+        }
+
+        stage('Docker Push') {
+            steps {
+                script {
+                    sh "docker push suelongo/api:latest-4bfe93c2714c"
+                    }
+                }
+            }
+        }
+    }
+
