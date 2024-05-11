@@ -9,14 +9,15 @@ pipeline {
         }
         stage('Build') {
             steps {
-                sh 'docker build -f dockerfile -t suelongo/api:sha256-1.'
+                sh 'docker build -f dockerfile -t suelongo/api:sha256-1 .'
+            } // Agregar un corchete de cierre para el bloque de pasos
         }
         stage('Push') {
             steps {
                 echo 'El construyo la imagen perfectamente'
             }
         }
-    }
+    } // Agregar un corchete de cierre para el bloque de etapas
     post {
         always {
             cleanWs()
@@ -28,5 +29,4 @@ pipeline {
             echo 'El pipeline falló. Revisar los logs para más detalles.'
         }
     }
-}
 }
