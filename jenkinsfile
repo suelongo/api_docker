@@ -1,23 +1,31 @@
 pipeline {
     agent any
-
-  
+    
     stages {
-        stage('Docker Build') {
+        stage('Checkout') {
             steps {
-                script {
-                   sh "docker build -f dockerfile -t suelongo/api:latest-4bfe93c2714c"
-                }
-            }
+                git branch: 'main', url: 'https://github.com/suelongo/api_docker.git'
+            } 
         }
-
-        stage('Docker Push') {
+        stage('Build') {
             steps {
-                script {
-                    sh "docker push suelongo/api:latest-4bfe93c2714c"
-                    }
-                }
+                sh 'docker build -f dockerfile -t suelongo/api:sha256-1.'
+        }
+        stage('Push') {
+            steps {
+                echo 'El construyo la imagen perfectamente'
             }
         }
     }
-
+    post {
+        always {
+            cleanWs()
+        }
+        success {
+            echo 'El pipeline se ejecutó correctamente'
+        }
+        failure {
+            echo 'El pipeline falló. Revisar los logs para más detalles.'
+        }
+    }
+}
